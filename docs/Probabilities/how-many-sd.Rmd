@@ -1,0 +1,89 @@
+---
+title: "How many standard deviations?"
+author: "Andrés Aravena"
+date: "19/04/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse, warn.conflicts = FALSE)
+```
+
+We will take a sample of size `N` and evaluate from 1 to 5 standard deviations
+```{r}
+N <- 1e4
+c <- seq(from=1, to=5, by=0.2)
+```
+
+First we test with a poisson distribution.
+```{r}
+x <- rpois(N, lambda=3)
+n <- sapply(c, function(a) sum(abs(x-mean(x)) > a*sd(x))/N)
+```
+
+```{r}
+ans <- data.frame(c, n=n*100, y=round(100/c^2,2), z=round(pnorm(c, lower.tail = FALSE)*100,2))
+plot(n~c, ans)
+lines(y~c, ans)
+lines(z~c, ans, col="blue")
+```
+
+```{r}
+ans %>% gather("key", "value", -c) %>%
+    ggplot(aes(x=c, y=value, color=key)) + 
+    geom_point() + geom_line()
+```
+
+<!-- TODO: How to make some series with points and others with lines? -->
+
+```{r}
+plot(n~c, ans, log="y")
+lines(y~c, ans)
+lines(z~c, ans, col="blue")
+```
+
+```{r}
+ans %>% gather("key", "value", -c) %>%
+    filter(value>1e-2) %>% 
+    ggplot(aes(x=c, y=value, color=key)) + 
+    scale_y_log10() + geom_point() + geom_line()
+```
+
+## Exponential
+```{r}
+x <- rexp(N, rate=3)
+n <- sapply(c, function(a) sum(abs(x-mean(x)) > a*sd(x))/N)
+```
+```{r}
+ans <- data.frame(c, n=n*100, y=round(100/c^2,2), z=round(pnorm(c, lower.tail = FALSE)*100,2))
+ans
+```
+
+```{r}
+plot(n~c, ans)
+lines(y~c, ans)
+lines(z~c, ans, col="blue")
+```
+
+```{r}
+plot(n~c, ans, log="y")
+lines(y~c, ans)
+lines(z~c, ans, col="blue")
+```
+
+```{r}
+data.frame(`Standard Deviations`=ans$c, `Empiric`=ans$n,
+           `Normal`=ans$z, `Chebyshev`=ans$y) %>%
+    gather("Model", "Probability", - Standard.Deviations) %>%
+    filter(Probability >= 1e-3) %>% 
+    ggplot(aes(x=Standard.Deviations, y=Probability, color=Model)) + 
+    scale_y_log10() + geom_point() + geom_line()
+```
+
+# Binomials
+```{r}
+N <- 100
+dbinom(1:N, N, prob = c(0.5,0.5)) %>% barplot(names.arg=1:N)
+```
+

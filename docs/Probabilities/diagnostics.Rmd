@@ -1,0 +1,155 @@
+---
+title: "Application: diagnosis"
+date: "2021-02-17 20:14"
+lang: en
+mathjax: true
+featured: false
+links:
+  - "[[_drafts/2021/math4bio/rules-of-probabilities]]"
+  - "[[_drafts/2021/math4bio/independence]]"
+  - "[[_drafts/2021/math4bio/multiplication-rules]]"
+  - "[[_drafts/2021/math4bio/bayes-theorem]]"
+  - "[[_slides/2021/msr/class04_2.Rmd]]"
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, dev.args=list(bg="transparent"), fig.align="center")
+library(pander)
+knitr::knit_hooks$set(inline = function(x) knitr:::format_sci(x, 'latex'))
+panderOptions("missing",".")
+prevalence <- 0.1/100
+precision <- 99/100
+pop.size <- 1e5
+```
+
+As part of the strategy to control COVID-19, many governments carry on random sampling of the population looking for asymptomatic cases.
+
+Imagine that you are randomly chosen for a test of COVID-19. The test result is "positive", that is, it says that you have the virus. You also know that the test sometimes fails, giving either a *false positive* or a *false negative*.
+Then the question is **what is the probability that you have COVID-19 given that the test said "positive"?**
+
+Let's assume that:
+
++ There are $`r pop.size`$ persons tested
++ The test has a _precision_ of `r precision*100`\%
++ The _prevalence_ of COVID in the population is `r prevalence*100`\%
+
+This will be our context 𝑍. The number of people tested will help us visualize the analysis.
+
+Let's fill this matrix. COVID truth in the rows and test results in the columns. We start with the total number of people tested
+```{r}
+M <- matrix(NA,3,3)
+rownames(M) <- c("COVID-", "COVID+", "Total")
+colnames(M) <- c("Test-", "Test+", "Total")
+M[3,3]=pop.size
+pander(M)
+```
+
+The prevalence is the percentage of the population that has COVID. In this case we know that `r prevalence*100`\% of them are COVID positive (COVID~+~).
+
+```{r}
+M[2,3] <- M[3,3]*prevalence
+M[1,3] <- M[3,3]*(1-prevalence)
+pander(M)
+```
+
+ `r precision*100`\%  are correctly diagnosed
+```{r}
+M[2,2] <- M[2,3]*precision
+pander(M)
+```
+`r precision*100`\%  are correctly diagnosed
+```{r}
+M[1,1] <- M[1,3]*precision
+pander(M)
+```
+
+
+`r (1-precision)*100`\% are mis-diagnosed
+```{r}
+M[1,2] <- M[1,3]*(1-precision)
+M[2,1] <- M[2,3]*(1-precision)
+pander(M)
+```
+
+
+Total people diagnosed: $\text{test}_+$
+```{r}
+M[3,] <- M[1,] + M[2,]
+pander(M)
+```
+What is the probability of being sick *given that* the test is positive?
+
+The true positive rate is
+
+$$\frac{`r M[2,2]`}{`r M[3,2]`} = `r round(M[2,2]/M[3,2]*100,2)`\%$$
+
+---
+
+# Using Bayes Theorem
+We want to evaluate the probability of having COVID, given that the test is positive
+$$ℙ(\text{COVID}_+ | \text{test}_+)$$
+given that we know the _prevalence_
+$$ℙ(\text{COVID}_+)=`r prevalence`$$
+and the _precision_, that is, the probability that the test is telling the truth
+
+$$
+\begin{aligned}
+ℙ(\text{test}_+ | \text{COVID}_+)=`r precision`\\
+ℙ(\text{test}_- | \text{COVID}_-)=`r precision`
+\end{aligned}
+$$
+
+What is the probability of being sick *given that* the test is positive?
+$$ℙ(\text{COVID}_+ \vert \text{test}_+)=\frac{ℙ(\text{test}_+ \vert \text{COVID}_+)\cdotℙ(\text{COVID}_+)}{ℙ(\text{test}_+)}$$
+
+We need to know $ℙ(\text{test}_+).$ We have
+
+$$ℙ(\text{test}_+)=
+ℙ(\text{test}_+, \text{COVID}_+)+
+ℙ(\text{test}_+, \text{COVID}_-)$$
+
+We can calculate them
+
+$$\begin{aligned}
+ℙ(\text{test}_+, \text{COVID}_+)& =ℙ(\text{test}_+ \vert \text{COVID}_+)\cdotℙ(\text{COVID}_+)\\
+& =`r precision`⋅ `r prevalence`
+\end{aligned}
+$$
+
+and
+
+$$\begin{aligned}
+ℙ(\text{test}_+, \text{COVID}_-)& =ℙ(\text{test}_+ \vert \text{COVID}_-)\cdotℙ(\text{COVID}_-) \\
+& =(1-`r precision`)⋅ (1-`r prevalence`)
+\end{aligned}
+$$
+
+The last part is true, because
+$$ℙ(\text{test}_+ \vert \text{COVID}_-)=1-ℙ(\text{test}_- \vert \text{COVID}_-)$$
+
+$$
+ℙ(\text{COVID}_-)=1-ℙ(\text{COVID}_+)
+$$
+
+Therefore $ℙ(\text{test}_+)=$ `r precision* prevalence` + `r (1-precision)*(1- prevalence)`=`r precision* prevalence + (1-precision)*(1- prevalence)`
+
+Finally, we find the value we were looking for
+$$ℙ(\text{COVID}_+ \vert \text{test}_+)=
+\frac{ℙ(\text{test}_+, \text{COVID}_+)}{ℙ(\text{test}_+)}=
+\frac{`r precision`\cdot `r prevalence`}{`r precision* prevalence + (1-precision)*(1- prevalence)`} =
+ `r round(precision* prevalence/(precision* prevalence + (1-precision)*(1- prevalence))*100,1)`\%$$
+
+# Exercise
+We would like to have zero errors, but errors are usually unavoidable. The technology used will limit the precision of diagnostics.
+
+In practice, diagnostic test designers know that telling that you are healthy when you are sick is much worse than telling that you are sick when you are healthy. In other words, the cost of a false positive is usually lower than the cost of a false negative. Of course the costs depend on the disease and in the technique. 
+
+What happens if the false positive rate is different from the false negative rate?
+
+$$
+\begin{aligned}
+ℙ(\text{test}_+ \vert \text{COVID}_+)=α\\
+ℙ(\text{test}_- \vert \text{COVID}_-)=β
+\end{aligned}
+$$

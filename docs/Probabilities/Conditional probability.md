@@ -1,0 +1,2 @@
+# Conditional probability
+The probability distribution reflects our (partial) understanding of a phenomenon **given the information available**. If we get new information our understanding may change and so does the probability.
