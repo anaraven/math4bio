@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <script src="../js/svgeometry.js"></script>
+</head>
+<body>  
+
+
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xl="http://www.w3.org/1999/xlink" version="1.1" viewBox="-100 -50 250 100" width="500pt" height="200pt" id="lens">
+</svg>
+
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xl="http://www.w3.org/1999/xlink" version="1.1" viewBox="-100 -50 200 120" width="300pt" height="240pt" id="lens2" font-size="0.75rem">
+</g></svg>
+
+<script>
+var svg = document.getElementById("lens");
+L = new Segment(new Point(-250, 0), new Point(250, 0)).draw(svg, {stroke:"grey"});
+A = new Point(0, -50, "A");
+B = new Point(0, +50, "B"); 
+AB = new Segment(A,B).draw(svg, {stroke:"grey", 'stroke-width':0.5});
+arc_AB = new Arc(200, A, B).draw(svg);
+arc_BA = new Arc(200, B, A).draw(svg);
+F = new Point(100, 0, "F").draw(svg, {dy:-3, dx:-1});
+E = AB.midpoint(0.8);
+D = new Point(-250, E.y);
+new Segment(D, E).draw(svg);
+new Segment(E, F).extend(0.5).draw(svg);
+E = AB.midpoint(0.35);
+D = new Point(-250, E.y);
+new Segment(D, E).draw(svg);
+new Segment(E, F).extend(0.5).draw(svg);
+E = AB.midpoint(0.65);
+D = new Point(-250, E.y);
+new Segment(D, E).draw(svg);
+new Segment(E, F).extend(0.5).draw(svg);
+E = AB.midpoint(0.2);
+D = new Point(-250, E.y);
+new Segment(D, E).draw(svg);
+new Segment(E, F).extend(0.5).draw(svg);
+
+svg = document.getElementById("lens2");
+//L.draw(svg, {stroke:"grey"});
+AB.draw(svg, {stroke:"grey", 'stroke-width':0.5});
+arc_AB.draw(svg, {stroke:"black",'stroke-width':2, fill:'none'});
+arc_BA.draw(svg, {stroke:"black",'stroke-width':2, fill:'none'});
+ray = function(y, alpha) {
+  E = new Point(0,y);
+D = new Point(-70, E.y);
+DD = new Segment(D, E).extend(1).draw(svg, {stroke:"grey", 'stroke-width':0.5});
+D2 = DD.b
+C  = new Point(D.x, D.y-alpha, "m").draw(svg, {'text-anchor': "end", dy:alpha/2 , dx:-1});
+C2 = new Point(D2.x, D2.y+alpha-y/2, "m'").draw(svg, {dy:-(alpha-y/2)/2, dx:2});
+new Segment(C , D ).draw(svg, {stroke:"grey", 'stroke-width':0.5});
+new Segment(C2, D2).draw(svg, {stroke:"grey", 'stroke-width':0.5});
+new Segment(E, C ).extend(0.4).draw(svg);
+new Segment(E, C2).extend(0.4).draw(svg);
+}
+ray(-35, 15);
+ray(0, 15);
+ray(35, 15);
+</script>
+
+
+</body>

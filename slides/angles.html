@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <script src="../js/svgeometry.js"></script>
+</head>
+<body>  
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xl="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 450 150" width="450pt" height="150pt" id="arch">
+<!-- g stroke="black" stroke-opacity="1" stroke-dasharray="none" fill="none" fill-opacity="1" stroke-linecap="round" stroke-linejoin="round" stroke-width="1">
+</g -->
+</svg>
+
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xl="http://www.w3.org/1999/xlink" version="1.1" viewBox="65 0 90 80" width="150pt" height="150pt" id="angle" font-size="0.75rem">
+</g></svg>
+
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xl="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 -50 500 100" width="500pt" height="100pt" id="lens">
+</svg>
+
+<script>
+var svg = document.getElementById("arch");
+// from https://github.com/geidav/ombb-rotating-calipers
+
+var radius = 70;
+var C = new Point(75, 75, "C");
+new Circle(C, radius).draw(svg);
+var poly = new RegularPolygon(6, C, radius).draw(svg);
+var C2 = new Point(75*3, 75, "C");
+new Circle(C2, radius).draw(svg);
+new RegularPolygon(12, C2, radius).draw(svg);
+var C3 = new Point(75*5, 75, "C");
+new Circle(C3, radius).draw(svg);
+new RegularPolygon(24, C3, radius).draw(svg);
+
+
+var svg = document.getElementById("angle");
+new Circle(C, 70).draw(svg);
+var A = poly.points[5];
+var B = poly.points[0];
+A.setLabel("A").draw(svg, {dy:-2, dx:2});
+B.setLabel("B").draw(svg, {dy:0, dx:2});
+C.draw(svg, {'text-anchor':'end', dy:2, dx:-2});
+new Arc(radius,A,B).draw(svg, {stroke:"red", fill:"none"});
+
+//poly.draw(svg);
+AB = new Segment(A,B).draw(svg);
+AC = new Segment(A,C).draw(svg);
+BC = new Segment(B,C).draw(svg);
+M  = AB.midpoint(0.5).setLabel("M");
+CM = new Segment(C,M);
+N = CM.midpoint(radius/CM.length()).setLabel("N").draw(svg, {dy:0, dx:2});
+CN = new Segment(C,N).draw(svg);
+
+A1 = AC.midpoint(0.8);
+B1 = BC.midpoint(0.8).setLabel("α").draw(svg, {dy:-2, dx:1, fill:"grey", 'font-size':"0.7rem"});
+new Arc(radius*0.2, A1, B1).draw(svg, {stroke:"grey", fill:"none"});
+
+var svg = document.getElementById("lens");
+L = new Segment(new Point(0, 0), new Point(500, 0)).draw(svg, {stroke:"grey"});
+A = new Point(200, -50, "A");
+B = new Point(200, +50, "B"); 
+AB = new Segment(A,B).draw(svg, {stroke:"grey", 'stroke-width':0.5});
+new Arc(200, A, B).draw(svg);
+new Arc(200, B, A).draw(svg);
+F = new Point(300, 0, "F").draw(svg, {dy:-3, dx:-1});
+E = AB.midpoint(0.8);
+D = new Point(0, E.y);
+new Segment(D, E).draw(svg);
+new Segment(E, F).extend(0.5).draw(svg);
+E = AB.midpoint(0.2);
+D = new Point(0, E.y);
+new Segment(D, E).draw(svg);
+new Segment(E, F).extend(0.5).draw(svg);
+E = AB.midpoint(0.35);
+D = new Point(0, E.y);
+new Segment(D, E).draw(svg);
+new Segment(E, F).extend(0.5).draw(svg);
+E = AB.midpoint(0.65);
+D = new Point(0, E.y);
+new Segment(D, E).draw(svg);
+new Segment(E, F).extend(0.5).draw(svg);
+</script>
+
+
+</body>

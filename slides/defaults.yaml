@@ -1,0 +1,27 @@
+writer: revealjs
+template: template.html
+slide-level: 2
+strip-comments: true
+html-math-method:
+  method: mathjax
+variables:
+  theme: simple
+  center: false
+  transition: fade
+  backgroundTransition: fade
+  self_contained: no
+  slide_level: 2
+  plugin-notes: true
+  x-revealjs-url: 'https://cdn.jsdelivr.net/npm/reveal.js@3'
+  revealjs-url: /js/reveal.js-3.3.0.1
+  controls: false
+  progress: true
+  history: true
+  hideAddressBar: true
+  slideNumber: "c"
+  width: 1100
+  navigationMode: linear
+  css: '/css/reveal-extra.css'
+  x-header-includes: '<script src="/js/header-attrs-2.14/header-attrs.js"></script>'
+  mathjax-url: 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
+
