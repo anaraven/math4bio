@@ -17,10 +17,12 @@ The absolute error is not a continuous function, so we cannot use derivatives to
 ---
 
 If $\beta$ is very small and is less than all the numbers in the set, then all the values inside the absolute value are positive, thus
-$$AE(\beta)=\sum (y_i-\beta)=\sum y_i - n \beta$$ if $\beta<y_1$.
+$$AE(\beta)=\sum (y_i-\beta)=\sum y_i - n \beta$$
+if $\beta<y_1$.
 
 In this case the absolute error is reduced when $\beta$ *increases*. A similar analysis shows that, if $\beta$ is greater than all numbers in the set, then
-$$AE(\beta)=\sum (\beta-y_i)=n \beta - \sum y_i$$ if $\beta>y_n$.
+$$AE(\beta)=\sum (\beta-y_i)=n \beta - \sum y_i$$
+if $\beta>y_n$.
 
 Now to reduce the absolute error we have to *reduce* $\beta$.
 

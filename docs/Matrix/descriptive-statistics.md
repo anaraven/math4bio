@@ -19,12 +19,13 @@ If the observations are numeric, we may ask *"How can we represent this set of n
 Let's say that we have a vector $𝐲=(y_1,\ldots, y_n)$ with $n$ observations, each one with value $y_i$ for $i$ taking values between 1 and $n$. We want to represent this set by a single number $\hat{y}$. We can choose any number to represent it, even numbers that do not belong to this set. For example we can choose $\hat{y}$ to be the smallest value $\min(\{y_i\})$ or the greatest value $\max(\{y_i\})$.
 
 ## Which one is better?
+
 To say that a number $\hat{y}$ is better than the rest, we need a way to measure its *goodness*. The criterium most used is to define an **error function** that measures *how much any number fails to represent the complete set of numbers*. For example we may consider the **absolute error**, which can be written as
 $$AE(β)=\sum_i \vert y_i - β\vert,$$
 where the vertical bars represent the *absolute value* function.
 
-
 ## It is easier with derivatives
+
 Since all this evaluation is complicated, people traditionally have preferred a different error index. Instead of absolute values, the most common approach uses squared values. They are always positive and have a single minimum that can be found using derivatives. We are talking about the *square error*, which is defined as
 $$SE(β; 𝐲)=\sum_i (y_i-β)^2.$$
 
@@ -40,11 +41,12 @@ $$-2\sum_i y_i + 2 n β=0$$
 and, solving for $β,$ we found that the best value to represent $𝐲$ is
 $$β^* = \sum_i y_i / n,$$
 
-that is, the _mean value_, usually called _average_. 
+that is, the *mean value*, usually called *average*.
 
 We usually write the average of $𝐲$ as $\bar{𝐲}.$ Be careful here: the value $\bar{𝐲}$ is a single number, while $𝐲$ is a vector.
 
 ## How good is the best one
+
 Now that we have found that $\bar{𝐲}$ is the best value to represent $𝐲$, we want to know *how good* is this representation. In other words, we want to evaluate the square error when $β=\bar{𝐲}$, that is
 $$SE(\bar{𝐲}; 𝐲)= \sum_i y_i^2 - 2\bar{𝐲}\sum_i y_i + n \bar{𝐲}^2.$$
 Now we can write $\bar{𝐲}$ as $\sum_i y_i / n$ and we get
@@ -53,6 +55,7 @@ which, after simplification, becomes
 $$SE(\bar{𝐲}; 𝐲)= \sum_i y_i^2 - \frac{1}{n}\left(\sum_i y_i\right)^2$$
 
 ## Minimizing MSE
+
 The error is
 $$\mathrm{MSE}(β, 𝐲)=\frac{1}{n}\sum_i (y_i-β)^2$$
 
@@ -63,6 +66,7 @@ $$\frac{d}{d β} \mathrm{MSE}(β, 𝐲)= \frac{2}{n}\sum_i (y_i - \beta)$$
 > The minimal values of functions are located where the derivative is zero
 
 ## Minimizing MSE
+
 Now we find the value of $β$ that makes the derivative equal to zero.
 
 $$\frac{d}{d β} \mathrm{MSE}(\beta, 𝐲)= \frac{2}{n}\sum_i (y_i - \beta)$$
@@ -72,6 +76,7 @@ Making this last formula equal to zero and solving for $β$ we found that the be
 $$\beta^* = \frac{1}{n} \sum_i y_i = \bar{𝐲}$$
 
 ## Is this a good representative?
+
 If $\bar{𝐲}$ is the best representative, the error is
 
 $$\mathrm{MSE}(\bar{𝐲}, 𝐲)=\frac{1}{n}\sum_i (y_i-\bar{𝐲})^2$$
@@ -80,8 +85,8 @@ This is called the *variance* of $𝐲$. We write then
 
 $$\mathrm{var}(𝐲)=\frac{1}{n}\sum_i (y_i-\bar{𝐲})^2$$
 
-
 ## Linear model
+
 Now we have a second vector $𝐱$
 
 The new model is
@@ -90,6 +95,7 @@ for $i=1,\ldots,n$. All these equations can be written in one as
 $$𝐲 = β_0 𝟏 + β_1𝐱 + 𝐞$$
 
 ## Mean square error
+
 Now we want to minimize
 $$\mathrm{MSE}\left(
 \begin{bmatrix}β_0\\β_1\end{bmatrix}, 𝐲, 𝐱\right)
@@ -231,7 +237,7 @@ just as before.
 ## One variable case
 mean square error
 $$\begin{aligned}
-\frac{1}{n}𝐞^T𝐞 
+\frac{1}{n}𝐞^T𝐞
 & = \frac{1}{n}𝐲^T (𝐈 - 𝐀(𝐀^T 𝐀)^{-1}𝐀^T) 𝐲\\
 & = \frac{1}{n}𝐲^T (𝐈 - 𝟏(𝟏^T 𝟏)^{-1}𝟏^T) 𝐲\\
 & = \frac{1}{n}𝐲^T 𝐲 - \frac{1}{n}𝐲^T𝟏(n)^{-1}𝟏^T 𝐲\\

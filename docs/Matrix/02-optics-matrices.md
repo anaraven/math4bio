@@ -22,15 +22,18 @@ published: no
 + diagonal, trace
 
 ## matrix inversion
+
 application to the image problem
 
 ## Special matrices easy to invert
+
 + triangular matrices
 + orthogonal matrices and rotations
 
 # Other applications of matrices
 
 ## Networks
+
 Let's consider a square matrix $A$, with $n$ rows and $n$ columns, where each cell $A_{ij}$ is either 0 or 1.
 Any matrix like this one can be seen as a network in the following way:
 
@@ -42,6 +45,7 @@ For example, for the matrix
 ~~~ note
 A= some binary matrix
 ~~~
+
 we obtain this drawing
 
 ~~~ note
@@ -51,6 +55,7 @@ drawing for A
 + if the matrix is symmetric, then each arrow is reversible. For each link form $i$ to $j$ there is another link in the opposite direction, that is, from $j$ to $i$. The graph is undirected
 
 ## Parameters of graphs
+
 + directed or not
 + number of nodes
 + number of edges
@@ -58,6 +63,7 @@ drawing for A
 + costs of edges
 
 ## Properties of graphs
+
 + degree of each node
 + degree distribution
 + average degree
@@ -65,9 +71,11 @@ drawing for A
 + strongly connected components
 
 ## Euler's rule
+
 + nodes, edges, degree
 
 ## applications
+
 + seven bridges
 + chemistry
 + metabolism
